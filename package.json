@@ -1,0 +1,25 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "todolist",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarachang530/ToDoList.git"
+  },
+  "author": "Sara Chang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sarachang530/ToDoList/issues"
+  },
+  "homepage": "https://github.com/sarachang530/ToDoList#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2",
+    "pg": "^7.18.2"
+  }
+}
