@@ -61,3 +61,60 @@ toDoController.deleteTask = function(req, res) {
   });
   return next();
 };
+
+toDoController.updateTask = function(req, res) {
+  //we'll need the id in order to grab onto the specific row we need to update
+  const queryString = 'UPDATE toDo SET tasks = $2 WHERE id = $1';
+  // UPDATE table-name SET column-name = position-in-array WHERE
+  const { id, task } = req.body;
+  const updateArr = [id, task];
+  db.query(queryString, updateArr, (err) => {
+    if (err) {
+      return next({
+        log: 'error in getAllTasks',
+        message: { err }
+      });
+    }
+  });
+  return next();
+};
+
+//middleware for handling user signup
+toDoController.newUser = function(req, res, next) {
+  const { userName } = req.body;
+  const insertUser = [userName];
+  console.log('req.body username in newUser: ', req.body.userName);
+  const queryString = 'INSERT INTO userTable (userName) VALUES($1)';
+  db.query(queryString, insertUser, (err) => {
+    if (err) {
+      return next({
+        log: 'error in newUser',
+        message: { err }
+      });
+    }
+    return next();
+  });
+};
+
+toDoController.setCookie = function(req, res, next) {
+  //middleware to add a cookie to the browser that will last for 10 seconds
+  res.cookie('Authed', true, { maxAge: 20000 });
+  return next();
+};
+
+toDoController.checkCookie = function(req, res, next) {
+  //the req object has a cookies property on it. The cookies property will have every cookie in it that the client has
+  const cookies = req.cookies;
+  //   console.log('req.cookies in checkCookies', cookies);
+  //check to see if the client already has a cookie named "authed" active. If so, move onto the next middleware function.
+  if (cookies['Authed'] === 'true') {
+    return next();
+  } else {
+    //if the client doesn't have a cookie, send a message to the FE that they need to sign in
+    res.json({ message: 'Sign in dude' });
+  }
+
+  return next();
+};
+
+module.exports = toDoController;
